@@ -11,29 +11,33 @@
 
 </head>
 <body>
+  {% if request.user.is_authenticated %}
     <div class="container clearfix">
-        <div class="people-list" id="people-list">
-          <div class="search">
-            <input type="text" placeholder="search" />
-            <i class="fa fa-search"></i>
-          </div>
-          <ul class="list">
-            {% for user in users %}
-            <li class="clearfix" id={{user.username}}>
-              <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
-              <div class="about">
-                <div class="name"><a href="{% url 'second_chat' username=user.username %}">{{user.username}}</a></div>
-                <div class="status">
-                  <i class="fa fa-circle online"></i> online
-                </div>
-              </div>
-            </li>
-            {% endfor %}
-          </ul>
+      <div class="people-list" id="people-list">
+        <div class="search">
+          <input type="text" placeholder="search" id="myInput" onkeyup="myFunction()" title="Type in a name" />
+          <i class="fa fa-search"></i>
         </div>
-
+        <ul class="list" style="list-style: none;" id="myUL">
+          {% for user in users %}
+          <li class="clearfix" id={{user.username}}>
+            <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
+            <div class="about">
+              <div class="name"><a href="{% url 'second_chat' username=user.username %}" style="text-decoration: none; color:chartreuse;">{{user.first_name}} {{user.last_name}}</a></div>
+              <div class="status">
+                <i class="fa fa-circle online"></i> online
+              </div>
+            </div>
+          </li>
+          {% endfor %}
+        </ul>
+      </div>
         
       </div> <!-- end container -->
+
+      {% else %}
+      <center><h1 style="color: black;"> Hey you need to login first </h1> </center>
+      {% endif %}
 <!-- {{user.id|json_script:"json-username"}}
 {{request.user.username|json_script:"json-message-username"}} -->
 <script src="{% static 'js/app.js' %}"></script>
