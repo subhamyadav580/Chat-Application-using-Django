@@ -48,3 +48,4 @@ dist/**
 *.i18n.json
 
 myvenv/
+db.sqlite3
