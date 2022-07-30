@@ -1,0 +1,94 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{request.user}}{% endblock %}
+
+{% block content %}
+<div class="container clearfix">
+    <div class="people-list" id="people-list">
+      <div class="search">
+        <input type="text" placeholder="search" id="myInput" onkeyup="myFunction()" title="Type in a name" />
+        <i class="fa fa-search"></i>
+      </div>
+      <ul class="list" style="list-style: none;" id="myUL">
+        {% for user in users %}
+        <li class="clearfix" id={{user.username}}>
+          <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01.jpg" alt="avatar" />
+          <div class="about">
+            <div class="name"><a href="{% url 'second_chat' username=user.username %}" style="text-decoration: none; color:chartreuse;">{{user.first_name}} {{user.last_name}}</a></div>
+            <div class="status">
+              <i class="fa fa-circle online"></i> online
+            </div>
+          </div>
+        </li>
+        {% endfor %}
+      </ul>
+    </div>
+
+    
+
+    <div class="chat">
+      <div class="chat-header clearfix">
+        <img src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/chat_avatar_01_green.jpg" alt="avatar" />
+  
+        <div class="chat-about">
+          <div class="chat-with">Chat with {{username}}</div>
+          <div class="chat-num-messages">already {{count}} messages</div>
+        </div>
+        <i class="fa fa-star"></i>
+      </div> <!-- end chat-header -->
+      
+      <div class="chat-history">
+        <ul id="chat-body" style="list-style: none;">
+        {% for message in messages %}
+        {% if message.0 == user %}
+          <li class="clearfix">
+            <div class="message-data align-right">
+              <span class="message-data-time">{{message.2|timesince}}</span> &nbsp; &nbsp;
+              <span class="message-data-name">{{username}}</span> <i class="fa fa-circle me"></i>
+  
+            </div>
+            <div class="message other-message float-right">
+                {{message.1}}
+            </div>
+          </li>
+          {% else %}
+          <li>
+            <div class="message-data">
+              <span class="message-data-name"><i class="fa fa-circle online"></i> {{request.user}}</span>
+              <span class="message-data-time">{{message.2|timesince}}</span>
+            </div>
+            <div class="message my-message">
+                {{message.1}}
+            </div>
+          </li>
+          {% endif %}
+          {% endfor %}
+        </ul>
+      </div> <!-- end chat-history -->
+      
+  
+      <div class="chat-message clearfix">
+        <textarea name="message-to-send" id="message-to-send" placeholder="Type your message" rows="3"></textarea>
+  
+        <i class="fa fa-file-o"></i> &nbsp;&nbsp;&nbsp;
+        <i class="fa fa-file-image-o"></i>
+  
+        <button id="chat-message-submit">Send</button>
+  
+      </div> <!-- end chat-message -->
+  
+    </div> <!-- end chat -->
+    
+  
+  </div> <!-- end container -->
+
+
+  {{user|json_script:"json-username"}}
+{{request.user.id|json_script:"json-message-username"}}
+{% endblock %}
+
+{% block javascript %}
+
+<script type="text/javascript" src="{% static '/js/chat.js' %}"></script>
+{% endblock %}
