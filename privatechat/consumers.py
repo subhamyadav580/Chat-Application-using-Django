@@ -4,7 +4,7 @@ from asgiref.sync import async_to_sync
 from channels.generic.websocket import WebsocketConsumer
 from channels.db import database_sync_to_async
 from .models import ChatModel
-
+from django.contrib.auth.models import User
 
 class PersonalChatConsumer(WebsocketConsumer):
     def connect(self):
@@ -39,13 +39,14 @@ class PersonalChatConsumer(WebsocketConsumer):
         )
     def chat_message(self, event):
         message = event['message']
-        username = event['username']
-
+        user_id = event['username']
+        user_obj = User.objects.get(id=user_id)
         self.send(text_data=json.dumps({
             'message': message,
-            'username': username
+            'username' : user_obj.username,
+            'user_id': user_id
         }))
-        print("Messaage sent")
+        print(f"{user_obj.username} : Messaage sent")
 
     def disconnect(self, code):
         async_to_sync(self.channel_layer.group_discard)(

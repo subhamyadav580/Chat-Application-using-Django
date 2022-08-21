@@ -28,13 +28,12 @@ socket.onmessage = function(e){
     console.log(e.data.message)
     const data = JSON.parse(e.data);
     var today= new Date();
-    if(data.username == reciever_id){
+    time_since = timeSince(today);
+    if(data.user_id == reciever_id){
         document.querySelector('#chat-body').innerHTML += 
                                                             `  <li class="clearfix">
                                                                 <div class="message-data align-right">
-                                                                  <span class="message-data-time">${today}</span> &nbsp; &nbsp;
-                                                                  <span class="message-data-name">${data.username}</span> <i class="fa fa-circle me"></i>
-                                                      
+                                                                  <span class="message-data-time">${time_since}</span> &nbsp; &nbsp;                                                      
                                                                 </div>
                                                                 <div class="message other-message float-right">
                                                                     ${data.message}
@@ -44,8 +43,7 @@ socket.onmessage = function(e){
         document.querySelector('#chat-body').innerHTML += 
                                                             ` <li>
                                                                 <div class="message-data">
-                                                                  <span class="message-data-name"><i class="fa fa-circle online"></i> ${send_id}</span>
-                                                                  <span class="message-data-time">${today}</span>
+                                                                   <span class="message-data-time">${time_since}</span>
                                                                 </div>
                                                                 <div class="message my-message">
                                                                 ${data.message}
@@ -110,3 +108,32 @@ function myFunction() {
     }
   }
   
+
+
+function timeSince(date) {
+
+var seconds = Math.floor((new Date() - date) / 1000);
+
+var interval = seconds / 31536000;
+
+if (interval > 1) {
+    return Math.floor(interval) + " years";
+}
+interval = seconds / 2592000;
+if (interval > 1) {
+    return Math.floor(interval) + " months";
+}
+interval = seconds / 86400;
+if (interval > 1) {
+    return Math.floor(interval) + " days";
+}
+interval = seconds / 3600;
+if (interval > 1) {
+    return Math.floor(interval) + " hours";
+}
+interval = seconds / 60;
+if (interval > 1) {
+    return Math.floor(interval) + " minutes";
+}
+return Math.floor(seconds) + " seconds";
+}
