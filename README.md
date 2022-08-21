@@ -11,7 +11,7 @@
 
 2. Now install all pakages.
 
-    ```pip3 install -r install requirements.txt```
+    ```pip3 install -r requirements.txt```
 
 
 3. Now move to the project directory.
